@@ -226,6 +226,6 @@ app.use((error, req, res, next) => {
 // ============================
 initializeDatabase().then(() => {
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`🚀 Server running on https://reno-platforms-assignment-sigma.vercel.app/${PORT}`);
   });
 });

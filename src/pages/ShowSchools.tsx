@@ -26,7 +26,7 @@ const ShowSchools: React.FC = () => {
 
   const fetchSchools = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/schools');
+      const response = await fetch('https://reno-platforms-assignment-sigma.vercel.app/3001/api/schools');
       const data = await response.json();
 
       if (data.success) {
