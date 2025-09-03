@@ -24,45 +24,53 @@ const AddSchool: React.FC = () => {
     formState: { errors }
   } = useForm<SchoolFormData>();
 
-  const onSubmit = async (data: SchoolFormData) => {
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+ const API_BASE_URL = "https://assignmentbackend-3b5x.onrender.com";
 
-    try {
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('address', data.address);
-      formData.append('city', data.city);
-      formData.append('state', data.state);
-      formData.append('contact', data.contact);
-      formData.append('email_id', data.email_id);
-      
-      if (data.image && data.image.length > 0) {
-        formData.append('image', data.image[0]);
-      }
+const onSubmit = async (data: SchoolFormData) => {
+  setIsSubmitting(true);
+  setSubmitStatus(null);
 
-      const response = await fetch('https://reno-platforms-assignment-sigma.vercel.app/3001/api/schools', {
-        method: 'POST',
-        body: formData
-      });
+  try {
+    const formData = new FormData();
+    formData.append('name', data.name);
+    formData.append('address', data.address);
+    formData.append('city', data.city);
+    formData.append('state', data.state);
+    formData.append('contact', data.contact);
+    formData.append('email_id', data.email_id);
 
-      const result = await response.json();
-
-      if (result.success) {
-        setSubmitStatus('success');
-        setSubmitMessage('School added successfully!');
-        reset();
-      } else {
-        setSubmitStatus('error');
-        setSubmitMessage(result.message || 'Failed to add school');
-      }
-    } catch (error) {
-      setSubmitStatus('error');
-      setSubmitMessage('Network error. Please try again.');
-    } finally {
-      setIsSubmitting(false);
+    if (data.image && data.image.length > 0) {
+      formData.append('image', data.image[0]);
     }
-  };
+
+    const response = await fetch(`${API_BASE_URL}/api/schools`, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    if (result.success) {
+      setSubmitStatus('success');
+      setSubmitMessage('School added successfully!');
+      reset();
+    } else {
+      setSubmitStatus('error');
+      setSubmitMessage(result.message || 'Failed to add school');
+    }
+  } catch (error) {
+    console.error("Error while adding school:", error);
+    setSubmitStatus('error');
+    setSubmitMessage('Network error. Please try again.');
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <div className="max-w-2xl mx-auto">

@@ -25,21 +25,22 @@ const ShowSchools: React.FC = () => {
   }, []);
 
   const fetchSchools = async () => {
-    try {
-      const response = await fetch('https://reno-platforms-assignment-sigma.vercel.app/3001/api/schools');
-      const data = await response.json();
+  try {
+    const response = await fetch('https://assignmentbackend-3b5x.onrender.com/api/schools');
+    const data = await response.json();
 
-      if (data.success) {
-        setSchools(data.schools);
-      } else {
-        setError(data.message || 'Failed to fetch schools');
-      }
-    } catch (err) {
-      setError('Network error. Please try again.');
-    } finally {
-      setLoading(false);
+    if (data.success) {
+      setSchools(data.schools);
+    } else {
+      setError(data.message || 'Failed to fetch schools');
     }
-  };
+  } catch (err) {
+    setError('Network error. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const filteredSchools = schools.filter(school => {
     const matchesSearch = school.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
